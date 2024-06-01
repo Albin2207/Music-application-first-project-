@@ -46,15 +46,15 @@ class SongSlider extends StatelessWidget {
     return CarouselSlider(
       items: sliderItems,
       options: CarouselOptions(
-        height: 180,
+        height: 150,
         aspectRatio: 16 / 9,
         viewportFraction: 0.8,
         initialPage: 0,
         enableInfiniteScroll: true,
         reverse: false,
         autoPlay: true,
-        autoPlayInterval: Duration(seconds: 3),
-        autoPlayAnimationDuration: Duration(milliseconds: 800),
+        autoPlayInterval: const Duration(seconds: 3),
+        autoPlayAnimationDuration: const Duration(milliseconds: 800),
         autoPlayCurve: Curves.fastOutSlowIn,
         enlargeCenterPage: true,
         enlargeFactor: 0.3,
@@ -70,7 +70,7 @@ class SongSlider extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            height: 250,
+            height: 45,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               image: DecorationImage(
@@ -81,7 +81,7 @@ class SongSlider extends StatelessWidget {
             ),
           ),
           Container(
-            height: 250,
+            height: 45,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               gradient: LinearGradient(

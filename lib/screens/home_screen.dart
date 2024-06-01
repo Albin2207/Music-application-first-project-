@@ -1,29 +1,38 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:muscify_app/Songs/all_songs.dart';
+import 'package:muscify_app/database/music_db.dart';
 import 'package:muscify_app/screens/privacy_policy.dart';
 import 'package:muscify_app/screens/search_screen.dart';
 import 'package:muscify_app/screens/termsand_conditions.dart';
 import 'package:muscify_app/widgets/all_colors.dart';
 import 'package:muscify_app/widgets/bottom_navigationbar.dart';
 import 'package:muscify_app/widgets/display_slider.dart';
+import 'package:muscify_app/screens/nowplaying_screen.dart'; // Ensure this is the correct import
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  // Method to get a random song
+  Music? getRandomMusic(List<Music> musicList) {
+    if (musicList.isEmpty) return null;
+    final randomIndex = Random().nextInt(musicList.length);
+    return musicList[randomIndex];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-         title: ShaderMask(
+        title: ShaderMask(
           shaderCallback: (Rect bounds) {
             return const LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              colors: 
-              [
-                
-               Colors.blue, 
-               Colors.green
+              colors: [
+                Colors.blue,
+                Colors.green,
               ],
             ).createShader(bounds);
           },
@@ -61,14 +70,14 @@ class HomeScreen extends StatelessWidget {
                 color: Color.fromARGB(255, 28, 107, 116),
               ),
               child: Icon(Icons.audiotrack,
-              color: Color.fromARGB(255, 227, 182, 19),
-              size: 80,
-             )
+                color: Color.fromARGB(255, 227, 182, 19),
+                size: 80,
+              ),
             ),
             ListTile(
               title: const Text('Privacy Policy'),
               onTap: () {
-                 Navigator.push(context, MaterialPageRoute(builder: (context) => const PrivacyPolicy()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const PrivacyPolicy()));
               },
             ),
             ListTile(
@@ -78,74 +87,117 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ListTile(
-             title: const Text("About Us"),
+              title: const Text("About Us"),
               onTap: () {
-              showDialog(
-               context: context,
-               builder: (context) {
-                return const AlertDialog(
-                 backgroundColor: Color.fromARGB(255, 28, 107, 116),
-                 title: Text('About Musific',style: TextStyle(color:Colors.white),),
-            content: Text(
-            'Musific is a Music platform where you can listen to your favorite music from your phone with easy access and segregating them by categories and more features on the way!',
-          style: TextStyle(color: Colors.white),),
-         );
-        },
-       );
-      },
-     ),
-    ]
-   )
-  ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: 
-            [
-             Color.fromARGB(255, 0, 0, 0), 
-             Color.fromARGB(255, 28, 107, 116), 
-             Color(0xFF2C5364)
-            ],
-          ),
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return const AlertDialog(
+                      backgroundColor: Color.fromARGB(255, 28, 107, 116),
+                      title: Text('About Musific', style: TextStyle(color:Colors.white),),
+                      content: Text(
+                        'Musific is a Music platform where you can listen to your favorite music from your phone with easy access and segregating them by categories and more features on the way!',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SongSlider(),
-              const SizedBox(height: 10),
-              const Text(
-                'All Songs',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white, // Text color adjusted to contrast with the gradient background
-                ),
+      ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromARGB(255, 0, 0, 0),
+                  Color.fromARGB(255, 28, 107, 116),
+                  Color(0xFF2C5364),
+                ],
               ),
-              const SizedBox(height:15),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const  Color.fromARGB(255, 28, 107, 116),
-                    borderRadius: BorderRadius.circular(15), 
-                   
-                  
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Songs(
-                      searchController: TextEditingController(),
-                      searchMusic: [],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 1), // Adjust bottom padding to cover the bottom navigation bar
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SongSlider(),
+                  const SizedBox(height: 10),
+                  // Play Random Song Button
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Music? randomMusic = getRandomMusic(songsNotifier.value);
+                            if (randomMusic != null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PlayScreen(
+                                    musicObj: randomMusic,
+                                    currentIndex: 0,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(Icons.play_arrow, color: Colors.white, size: 30),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'Random playback',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
+                  const SizedBox(height: 15),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 28, 107, 116),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(0),
+                        child: Songs(
+                          searchController: TextEditingController(),
+                          searchMusic: [],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
