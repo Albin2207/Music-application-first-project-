@@ -62,7 +62,7 @@ class _PlayScreenState extends State<PlayScreen> {
       }
     });
   }
-
+ 
   @override
   void dispose() {
     // Do not dispose the player to keep the music playing
@@ -258,14 +258,19 @@ Widget appBar(BuildContext context) {
       ),
       const SizedBox(height: 5),
         IconButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const EqualizerScreen()));
-          },
-          icon: const Icon(
-            Icons.equalizer,
-            color: itemscolor,
-          ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const EqualizerScreen(), // Use EqualizerScreen
+            ),
+          );
+        },
+        icon: const Icon(
+          Icons.equalizer,
+          color: itemscolor,
         ),
+      ),
       ],
     );
   }

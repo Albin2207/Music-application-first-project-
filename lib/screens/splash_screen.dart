@@ -17,7 +17,7 @@ class _SplashscreenState extends State<Splashscreen> {
   }
 
   Future<void> gotoHome() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
 
     Navigator.pushReplacement(
       context,

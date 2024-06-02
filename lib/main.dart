@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:equalizer_flutter_custom/equalizer_flutter_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -12,6 +13,7 @@ import 'package:muscify_app/funtions/song_changing.dart';
 import 'package:muscify_app/funtions/song_db.dart';
 import 'package:muscify_app/screens/splash_screen.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 
 
 Future<void> main() async {
@@ -37,7 +39,12 @@ Future<void> main() async {
     androidNotificationOngoing: true,
   );
 
-  runApp(const MyApp());
+   runApp(
+    ChangeNotifierProvider(
+      create: (context) => EqualizerProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {

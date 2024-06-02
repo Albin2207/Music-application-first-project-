@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:muscify_app/Songs/all_songs.dart';
 import 'package:muscify_app/database/music_db.dart';
@@ -9,10 +8,10 @@ import 'package:muscify_app/screens/termsand_conditions.dart';
 import 'package:muscify_app/widgets/all_colors.dart';
 import 'package:muscify_app/widgets/bottom_navigationbar.dart';
 import 'package:muscify_app/widgets/display_slider.dart';
-import 'package:muscify_app/screens/nowplaying_screen.dart'; // Ensure this is the correct import
+import 'package:muscify_app/screens/nowplaying_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key});
 
   // Method to get a random song
   Music? getRandomMusic(List<Music> musicList) {
@@ -151,7 +150,7 @@ class HomeScreen extends StatelessWidget {
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Colors.green,
+                              color: Color.fromARGB(255, 11, 157, 52),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
@@ -162,7 +161,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            child: const Icon(Icons.play_arrow, color: Colors.white, size: 30),
+                            child: const Icon(Icons.play_arrow, color: itemscolor),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -177,11 +176,15 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 20), 
+                  Container(
+                    height: 10,
+                    color:labelcolor.withOpacity(0.5),
+                  ),
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 28, 107, 116),
+                        color: labelcolor,
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Padding(

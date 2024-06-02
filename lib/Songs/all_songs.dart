@@ -12,10 +12,10 @@ class Songs extends StatefulWidget {
   final TextEditingController searchController;
   final List<Music> searchMusic;
   const Songs({
-    Key? key,
+    super.key,
     required this.searchController,
     required this.searchMusic,
-  }) : super(key: key);
+  });
 
   @override
   State<Songs> createState() => _SongsState();
